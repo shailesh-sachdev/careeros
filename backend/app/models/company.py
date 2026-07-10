@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import DateTime, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
@@ -21,4 +21,8 @@ class Company(Base):
         DateTime,
         default=datetime.utcnow,
         nullable=False,
+    )
+    jobs: Mapped[list["Job"]] = relationship(
+        back_populates="company",
+        cascade="all, delete-orphan",
     )
