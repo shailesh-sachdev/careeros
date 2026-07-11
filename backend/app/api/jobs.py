@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 
 from app.db.dependencies import get_db
 from app.services.job_query_service import JobQueryService
+from fastapi import HTTPException
+
+from app.models.job import Job
 
 router = APIRouter(
     prefix="/jobs",
@@ -34,3 +37,19 @@ async def list_jobs(
         provider=provider,
         sort=sort,
     )
+
+@router.get("/{job_id}")
+async def get_job(
+    job_id: int,
+    db: Session = Depends(get_db),
+):
+
+    job = db.get(Job, job_id)
+
+    if job is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Job not found",
+        )
+
+    return job
