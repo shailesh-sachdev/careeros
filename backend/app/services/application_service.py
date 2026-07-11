@@ -48,3 +48,12 @@ class ApplicationService:
         db.refresh(application)
 
         return application
+    
+    def delete(
+        self,
+        db: Session,
+        application: Application,
+    ) -> None:
+
+        db.delete(application)
+        db.commit()

@@ -5,6 +5,8 @@ from app.db.dependencies import get_db
 from app.models.application import ApplicationStatus
 from app.models.job import Job
 from app.services.application_service import ApplicationService
+from fastapi import HTTPException
+from app.models.application import Application
 
 router = APIRouter(
     prefix="/saved-jobs",
@@ -31,3 +33,32 @@ async def save_job(
         db=db,
         job_id=job_id,
     )
+
+
+@router.delete("/{job_id}")
+async def unsave_job(
+    job_id: int,
+    db: Session = Depends(get_db),
+):
+
+    application = db.query(Application).filter(
+        Application.job_id == job_id,
+        Application.status == ApplicationStatus.SAVED,
+    ).first()
+
+    if application is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Saved job not found",
+        )
+
+    service = ApplicationService()
+
+    service.delete(
+        db=db,
+        application=application,
+    )
+
+    return {
+        "message": "Job removed from saved jobs"
+    }
