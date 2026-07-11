@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 
-from app.core.config import settings
+from app.api.providers import router as provider_router
 
 app = FastAPI(
     title="CareerOS API",
     version="1.0.0",
 )
+
+app.include_router(provider_router)
 
 
 @app.get("/")
@@ -14,5 +16,4 @@ async def root():
         "status": "ok",
         "application": app.title,
         "version": app.version,
-        "database": settings.DATABASE_URL.split("@")[-1],
     }
