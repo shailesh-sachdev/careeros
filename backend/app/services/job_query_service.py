@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
 from app.models.job import Job
@@ -9,12 +9,29 @@ class JobQueryService:
     def list_jobs(
         self,
         db: Session,
-    ) -> list[Job]:
+        page: int,
+        page_size: int,
+    ):
+
+        total = db.scalar(
+            select(func.count()).select_from(Job)
+        )
 
         statement = (
             select(Job)
             .options(joinedload(Job.company))
             .order_by(Job.created_at.desc())
+            .offset((page - 1) * page_size)
+            .limit(page_size)
         )
 
-        return list(db.scalars(statement).unique().all())
+        jobs = list(
+            db.scalars(statement).unique().all()
+        )
+
+        return {
+            "total": total,
+            "page": page,
+            "page_size": page_size,
+            "items": jobs,
+        }

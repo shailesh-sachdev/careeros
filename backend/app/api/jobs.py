@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.db.dependencies import get_db
@@ -12,11 +12,15 @@ router = APIRouter(
 
 @router.get("")
 async def list_jobs(
+    page: int = Query(1, ge=1),
+    page_size: int = Query(25, ge=1, le=100),
     db: Session = Depends(get_db),
 ):
 
     service = JobQueryService()
 
-    jobs = service.list_jobs(db)
-
-    return jobs
+    return service.list_jobs(
+        db=db,
+        page=page,
+        page_size=page_size,
+    )
