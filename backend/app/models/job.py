@@ -2,17 +2,33 @@ from datetime import datetime
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
+from sqlalchemy import UniqueConstraint
 from app.db.base import Base
 
 
 class Job(Base):
     __tablename__ = "jobs"
+    __table_args__ = (
+    UniqueConstraint(
+            "provider",
+            "provider_job_id",
+            name="uq_provider_job",
+        ),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
 
     company_id: Mapped[int] = mapped_column(
         ForeignKey("companies.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    provider: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+    )
+
+    provider_job_id: Mapped[str] = mapped_column(
+        String(255),
         nullable=False,
     )
 
