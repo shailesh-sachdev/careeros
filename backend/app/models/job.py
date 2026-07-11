@@ -31,6 +31,10 @@ class Job(Base):
         String(255),
         nullable=False,
     )
+    applications: Mapped[list["Application"]] = relationship(
+        back_populates="job",
+        cascade="all, delete-orphan",
+    )
 
     title: Mapped[str] = mapped_column(String(255), nullable=False)
 
