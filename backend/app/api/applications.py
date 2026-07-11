@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.db.dependencies import get_db
 from app.models.application import ApplicationStatus
 from app.services.application_service import ApplicationService
+from app.models.application import Application
 
 router = APIRouter(
     prefix="/applications",
@@ -50,3 +51,10 @@ async def update_application(
         application=application,
         status=status,
     )
+
+@router.get("")
+async def list_applications(
+    db: Session = Depends(get_db),
+):
+
+    return db.query(Application).all()
