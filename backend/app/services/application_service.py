@@ -12,6 +12,14 @@ class ApplicationService:
         job_id: int,
     ) -> Application:
 
+        existing = self.get_by_job(
+            db=db,
+            job_id=job_id,
+        )
+
+        if existing:
+            return existing
+
         application = Application(
             job_id=job_id,
             status=ApplicationStatus.SAVED,
