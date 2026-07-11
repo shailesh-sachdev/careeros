@@ -15,6 +15,9 @@ class JobQueryService:
         page: int,
         page_size: int,
         search: str | None = None,
+        company: str | None = None,
+        location: str | None = None,
+        provider: str | None = None,
     ):
 
         statement = (
@@ -33,6 +36,21 @@ class JobQueryService:
                     Job.location.ilike(search_term),
                     Company.name.ilike(search_term),
                 )
+            )
+        
+        if company:
+            statement = statement.where(
+                Company.name.ilike(f"%{company}%")
+            )
+
+        if location:
+            statement = statement.where(
+                Job.location.ilike(f"%{location}%")
+            )
+
+        if provider:
+            statement = statement.where(
+                Job.provider == provider
             )
 
         total = db.scalar(
