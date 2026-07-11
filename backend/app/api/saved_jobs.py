@@ -19,6 +19,7 @@ async def save_job(
     job_id: int,
     db: Session = Depends(get_db),
 ):
+
     job = db.get(Job, job_id)
 
     if job is None:
@@ -28,6 +29,16 @@ async def save_job(
         )
 
     service = ApplicationService()
+    existing = service.get_by_job(
+        db=db,
+        job_id=job_id,
+    )
+
+    if existing:
+        raise HTTPException(
+            status_code=409,
+            detail="Job already saved",
+        )
 
     return service.create(
         db=db,

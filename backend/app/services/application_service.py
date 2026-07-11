@@ -57,3 +57,15 @@ class ApplicationService:
 
         db.delete(application)
         db.commit()
+
+    def get_by_job(
+        self,
+        db: Session,
+        job_id: int,
+    ) -> Application | None:
+
+        return db.scalar(
+            select(Application).where(
+                Application.job_id == job_id
+            )
+        )
