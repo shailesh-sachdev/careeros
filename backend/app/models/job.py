@@ -42,7 +42,7 @@ class Job(Base):
 
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
-    source: Mapped[str] = mapped_column(String(50), nullable=False)
+    # source: Mapped[str] = mapped_column(String(50), nullable=False)
 
     posted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
