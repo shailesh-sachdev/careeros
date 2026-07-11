@@ -18,6 +18,7 @@ async def list_jobs(
     company: str | None = Query(None),
     location: str | None = Query(None),
     provider: str | None = Query(None),
+    sort: str = Query("newest"),
     db: Session = Depends(get_db),
 ):
 
@@ -31,4 +32,5 @@ async def list_jobs(
         company=company,
         location=location,
         provider=provider,
+        sort=sort,
     )

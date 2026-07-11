@@ -1,13 +1,11 @@
-from sqlalchemy import func, select
+from sqlalchemy import asc, desc, func, or_, select
 from sqlalchemy.orm import Session, joinedload
 
-from app.models.job import Job
 from app.models.company import Company
-from sqlalchemy import func, or_, select
+from app.models.job import Job
 
 
 class JobQueryService:
-
 
     def list_jobs(
         self,
@@ -18,6 +16,7 @@ class JobQueryService:
         company: str | None = None,
         location: str | None = None,
         provider: str | None = None,
+        sort: str = "newest",
     ):
 
         statement = (
@@ -27,7 +26,6 @@ class JobQueryService:
         )
 
         if search:
-
             search_term = f"%{search}%"
 
             statement = statement.where(
@@ -37,7 +35,7 @@ class JobQueryService:
                     Company.name.ilike(search_term),
                 )
             )
-        
+
         if company:
             statement = statement.where(
                 Company.name.ilike(f"%{company}%")
@@ -57,9 +55,29 @@ class JobQueryService:
             select(func.count()).select_from(statement.subquery())
         )
 
+        if sort == "oldest":
+            statement = statement.order_by(
+                asc(Job.created_at)
+            )
+
+        elif sort == "company":
+            statement = statement.order_by(
+                asc(Company.name)
+            )
+
+        elif sort == "title":
+            statement = statement.order_by(
+                asc(Job.title)
+            )
+
+        else:
+            statement = statement.order_by(
+                desc(Job.created_at)
+            )
+
         jobs = list(
             db.scalars(
-                statement.order_by(Job.created_at.desc())
+                statement
                 .offset((page - 1) * page_size)
                 .limit(page_size)
             )
