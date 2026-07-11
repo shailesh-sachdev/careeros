@@ -5,6 +5,11 @@ from app.db.dependencies import get_db
 from app.models.application import ApplicationStatus
 from app.services.application_service import ApplicationService
 from app.models.application import Application
+from pydantic import BaseModel
+
+
+class NotesRequest(BaseModel):
+    notes: str
 
 router = APIRouter(
     prefix="/applications",
@@ -58,3 +63,29 @@ async def list_applications(
 ):
 
     return db.query(Application).all()
+
+@router.patch("/{application_id}/notes")
+async def update_notes(
+    application_id: int,
+    request: NotesRequest,
+    db: Session = Depends(get_db),
+):
+
+    service = ApplicationService()
+
+    application = service.get(
+        db=db,
+        application_id=application_id,
+    )
+
+    if application is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Application not found",
+        )
+
+    return service.update_notes(
+        db=db,
+        application=application,
+        notes=request.notes,
+    )

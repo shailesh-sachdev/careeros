@@ -5,6 +5,7 @@ from sqlalchemy import DateTime, Enum as SQLEnum, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
+from sqlalchemy import Text
 
 
 class ApplicationStatus(str, Enum):
@@ -34,6 +35,11 @@ class Application(Base):
         SQLEnum(ApplicationStatus),
         default=ApplicationStatus.SAVED,
         nullable=False,
+    )
+
+    notes: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
     )
 
     created_at: Mapped[datetime] = mapped_column(

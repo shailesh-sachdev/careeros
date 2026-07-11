@@ -77,3 +77,17 @@ class ApplicationService:
                 Application.job_id == job_id
             )
         )
+    
+    def update_notes(
+        self,
+        db: Session,
+        application: Application,
+        notes: str,
+    ) -> Application:
+
+        application.notes = notes
+
+        db.commit()
+        db.refresh(application)
+
+        return application
