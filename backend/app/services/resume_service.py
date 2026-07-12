@@ -6,6 +6,7 @@ from fastapi import UploadFile
 from sqlalchemy.orm import Session
 
 from app.models.resume import Resume
+from app.services.text_extraction_service import TextExtractionService
 
 
 UPLOAD_DIR = Path("uploads/resumes")
@@ -33,6 +34,12 @@ class ResumeService:
 
         with destination.open("wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
+        
+        extractor = TextExtractionService()
+
+        raw_text = extractor.extract(
+            str(destination),
+        )
 
         resume = Resume(
             candidate_profile_id=candidate_profile_id,
@@ -41,6 +48,7 @@ class ResumeService:
             file_path=str(destination),
             mime_type=file.content_type,
             file_size=destination.stat().st_size,
+            raw_text=raw_text,
         )
 
         db.add(resume)
