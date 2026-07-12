@@ -5,6 +5,10 @@ from app.api.jobs import router as jobs_router
 from app.api.applications import router as applications_router
 from app.api.saved_jobs import router as saved_jobs_router
 from app.api.candidate_profile import router as candidate_profile_router
+from app.api.ai import router as ai_router
+from app.api.resume import router as resume_router
+
+
 
 
 
@@ -19,6 +23,8 @@ app.include_router(jobs_router)
 app.include_router(applications_router)
 app.include_router(saved_jobs_router)
 app.include_router(candidate_profile_router)
+app.include_router(ai_router)
+app.include_router(resume_router)
 
 @app.get("/")
 async def root():
