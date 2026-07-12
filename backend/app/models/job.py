@@ -45,6 +45,30 @@ class Job(Base):
     job_url: Mapped[str] = mapped_column(String(1000), nullable=False, unique=True)
 
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    requirements: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    responsibilities: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    department: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+    )
+
+    team: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+    )
+
+    benefits: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
 
     # source: Mapped[str] = mapped_column(String(50), nullable=False)
 
