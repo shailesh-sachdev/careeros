@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from app.ai.resume_parser import ResumeParser
 from app.db.dependencies import get_db
 from app.models.resume import Resume
+import json
+
 
 router = APIRouter(
     prefix="/resume-ai",
@@ -34,4 +36,11 @@ async def parse_resume(
         resume.raw_text,
     )
 
-    return result
+    if isinstance(result, str):
+        resume.parsed_data = json.loads(result)
+    else:
+        resume.parsed_data = result
+
+    db.commit()
+
+    return resume.parsed_data

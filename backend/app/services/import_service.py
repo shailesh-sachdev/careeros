@@ -35,13 +35,21 @@ class ImportService:
             )
 
             if existing:
-                continue
 
-            job_service.create(
-                db=db,
-                company=company,
-                job=job,
-            )
+                job_service.update(
+                    db=db,
+                    db_job=existing,
+                    company=company,
+                    job=job,
+                )
+
+            else:
+
+                job_service.create(
+                    db=db,
+                    company=company,
+                    job=job,
+                )
 
         db.commit()
 

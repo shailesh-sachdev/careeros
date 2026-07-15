@@ -11,41 +11,94 @@ class JobMatcher:
     async def match(
         self,
         resume_text: str,
-        job_description: str,
+        job_title: str,
+        location: str | None,
+        department: str | None,
+        description: str | None,
     ) -> dict:
 
         system_prompt = """
-You are an expert technical recruiter.
+You are an expert technical recruiter with over 20 years of experience.
 
-Compare a candidate resume with a job description.
+Your job is to objectively evaluate how well a candidate matches a job posting.
 
 Return ONLY valid JSON.
 
 {
     "match_score": 0,
-    "strengths": [],
+    "strengths": [
+        {
+            "resume_evidence": "",
+            "matched_requirement": ""
+        }
+    ],
     "missing_skills": [],
     "summary": ""
 }
 
-Rules:
+Evaluation Rules:
 
-- match_score must be between 0 and 100.
-- strengths must contain only matching skills or experience.
-- missing_skills must contain only missing technical skills.
-- summary must be under 80 words.
+1. The match_score must be between 0 and 100.
+
+2. The score must reflect:
+   - Technical skills
+   - Years of experience
+   - Seniority level
+   - Domain experience
+   - Responsibilities
+   - Required technologies
+   - Leadership expectations
+
+3. Never increase the score because the candidate is generally a good engineer.
+   Only score based on evidence found in the resume.
+
+4. For each strength:
+   - Find something explicitly written in the resume.
+   - Match it to a requirement from the job.
+   - Do not invent experience.
+
+5. For missing_skills:
+   - List ONLY technologies, skills, responsibilities, qualifications or experience
+     that are required in the job description but NOT demonstrated in the resume.
+   - NEVER list skills that already appear in the resume.
+   - NEVER repeat strengths.
+
+6. If the role is significantly more senior than the candidate,
+   reduce the score accordingly.
+
+7. If the role belongs to a different specialization
+   (for example ML Platform, DevOps, Data Engineering, Mobile, Security),
+   reduce the score accordingly.
+
+8. The summary must briefly explain why the score was assigned.
+
+Return ONLY JSON.
 """
 
         user_prompt = f"""
-Resume:
+Candidate Resume
+
+-------------------------
 
 {resume_text}
 
-------------------------------------
+=========================
 
-Job Description:
+Job Title
 
-{job_description}
+{job_title}
+
+Location
+
+{location}
+
+Department
+
+{department}
+
+Job Description
+
+{description}
 """
 
         response = await self.ai.generate(

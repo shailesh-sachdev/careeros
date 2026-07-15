@@ -17,6 +17,16 @@ class JobImport(BaseModel):
 
     employment_type: str | None = None
 
+    department: str | None = None
+
+    team: str | None = None
+
+    requirements: str | None = None
+
+    responsibilities: str | None = None
+
+    benefits: str | None = None
+
     job_url: str
 
     posted_at: str | None = None

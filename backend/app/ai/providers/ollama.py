@@ -16,7 +16,7 @@ class OllamaProvider(BaseAIProvider):
         user_prompt: str,
     ) -> str:
 
-        async with httpx.AsyncClient(timeout=300) as client:
+        async with httpx.AsyncClient(timeout=400) as client:
 
             response = await client.post(
                 f"{self.base_url}/api/chat",

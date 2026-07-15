@@ -4,6 +4,7 @@ from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
+from sqlalchemy import JSON
 
 
 class Resume(Base):
@@ -46,6 +47,11 @@ class Resume(Base):
 
     raw_text: Mapped[str | None] = mapped_column(
         Text,
+        nullable=True,
+    )
+
+    parsed_data: Mapped[dict | None] = mapped_column(
+        JSON,
         nullable=True,
     )
 

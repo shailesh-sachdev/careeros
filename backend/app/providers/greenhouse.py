@@ -13,10 +13,13 @@ class GreenhouseProvider(BaseProvider):
         board_token: str,
     ) -> list[JobImport]:
 
-        async with httpx.AsyncClient(timeout=30) as client:
+        async with httpx.AsyncClient(timeout=60) as client:
 
             response = await client.get(
-                f"{self.BASE_URL}/{board_token}/jobs"
+                f"{self.BASE_URL}/{board_token}/jobs",
+                params={
+                    "content": "true",
+                },
             )
 
             response.raise_for_status()
@@ -27,6 +30,16 @@ class GreenhouseProvider(BaseProvider):
 
         for item in data["jobs"]:
 
+            departments = ", ".join(
+                department["name"]
+                for department in item.get("departments", [])
+            ) or None
+
+            team = ", ".join(
+                office["name"]
+                for office in item.get("offices", [])
+            ) or None
+
             jobs.append(
                 JobImport(
                     provider="greenhouse",
@@ -35,10 +48,15 @@ class GreenhouseProvider(BaseProvider):
                     company_name=board_token.replace("-", " ").title(),
                     company_website=None,
                     location=item.get("location", {}).get("name"),
-                    description=None,
+                    description=item.get("content"),
                     employment_type=None,
                     job_url=item["absolute_url"],
                     posted_at=item.get("updated_at"),
+                    department=departments,
+                    team=team,
+                    requirements=None,
+                    responsibilities=None,
+                    benefits=None,
                 )
             )
 

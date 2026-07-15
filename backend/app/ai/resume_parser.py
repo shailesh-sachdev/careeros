@@ -11,7 +11,7 @@ class ResumeParser:
     async def parse(
         self,
         raw_text: str,
-    ) -> dict:
+    ) -> str:
 
         system_prompt = """
 You are an expert resume parser.

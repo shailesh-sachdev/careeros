@@ -9,6 +9,8 @@ from app.api.ai import router as ai_router
 from app.api.resume import router as resume_router
 from app.api.resume_ai import router as resume_ai_router
 from app.api.job_match import router as job_match_router
+from app.api.resume_tailor import router as resume_tailor_router
+
 
 
 
@@ -31,6 +33,7 @@ app.include_router(ai_router)
 app.include_router(resume_router)
 app.include_router(resume_ai_router)
 app.include_router(job_match_router)
+app.include_router(resume_tailor_router)
 
 @app.get("/")
 async def root():
