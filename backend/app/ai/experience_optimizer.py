@@ -1,6 +1,8 @@
 import re
 
 from app.ai.manager import AIManager
+import json
+from app.ai.json_utils import parse_llm_json
 
 
 class ExperienceOptimizer:
@@ -130,6 +132,9 @@ Only improve the wording of the details.
             user_prompt=user_prompt,
         )
 
+        with open("experience_response.txt", "w", encoding="utf-8") as f:
+            f.write(response)
+
         response = (
             response
             .replace("```json", "")
@@ -139,4 +144,4 @@ Only improve the wording of the details.
 
         import json
 
-        return json.loads(response)
+        return parse_llm_json(response)

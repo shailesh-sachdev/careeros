@@ -7,25 +7,45 @@ class ResumeBuilder:
         experiences: list[dict],
     ) -> str:
 
+        # -----------------------------
+        # Skills
+        # -----------------------------
+
         skills = "\n".join(
             f"- {skill}"
             for skill in profile.get("skills", [])
         )
 
+        # -----------------------------
+        # Experience
+        # -----------------------------
+
         experience_md = ""
 
         for experience in experiences:
 
+            details = experience.get("details", "")
+
+            if isinstance(details, dict):
+                details = details.get(
+                    "description",
+                    "",
+                )
+
             experience_md += f"""
-### {experience["role"]}
+### {experience.get("role", "")}
 
-**{experience["company"]}**
+**{experience.get("company", "")}**
 
-📅 {experience["dates"]}
+📅 {experience.get("dates", "")}
 
-{experience["details"]}
+{details}
 
 """
+
+        # -----------------------------
+        # Projects
+        # -----------------------------
 
         projects_md = ""
 
@@ -34,12 +54,58 @@ class ResumeBuilder:
             [],
         ):
 
-            projects_md += f"""
-### {project["name"]}
+            title = (
+                project.get("title")
+                or project.get("name")
+                or "Untitled Project"
+            )
 
-{project["details"]}
+            body = []
+
+            if project.get("details"):
+                body.append(
+                    project["details"]
+                )
+
+            if project.get("purpose"):
+                body.append(
+                    f"Purpose: {project['purpose']}"
+                )
+
+            if project.get("technologies"):
+                body.append(
+                    "Technologies: "
+                    + ", ".join(
+                        project["technologies"]
+                    )
+                )
+
+            if project.get("technology"):
+                body.append(
+                    "Technologies: "
+                    + ", ".join(
+                        project["technology"]
+                    )
+                )
+
+            if project.get("capabilities"):
+                body.append(
+                    "Capabilities: "
+                    + ", ".join(
+                        project["capabilities"]
+                    )
+                )
+
+            projects_md += f"""
+### {title}
+
+{"\n".join(body)}
 
 """
+
+        # -----------------------------
+        # Education
+        # -----------------------------
 
         education_md = ""
 
@@ -48,12 +114,22 @@ class ResumeBuilder:
             [],
         ):
 
-            education_md += f"""
-- **{education["degree"]}**
+            dates = (
+                education.get("dates")
+                or education.get("year")
+                or ""
+            )
 
-  {education.get("year", "")}
+            education_md += f"""
+- **{education.get("degree", "")}**
+
+  {dates}
 
 """
+
+        # -----------------------------
+        # Certifications
+        # -----------------------------
 
         certifications_md = ""
 
@@ -69,11 +145,15 @@ class ResumeBuilder:
                 for certification in certifications
             )
 
-        markdown = f"""# {profile["name"]}
+        # -----------------------------
+        # Resume
+        # -----------------------------
 
-📧 {profile["email"]}
+        markdown = f"""# {profile.get("name", "")}
 
-📞 {profile["phone"]}
+📧 {profile.get("email", "")}
+
+📞 {profile.get("phone", "")}
 
 🔗 LinkedIn: {profile.get("linkedin", "")}
 
