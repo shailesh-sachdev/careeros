@@ -1,3 +1,5 @@
+import json
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -6,7 +8,6 @@ from app.ai.resume_tailor import ResumeTailor
 from app.db.dependencies import get_db
 from app.models.job import Job
 from app.models.resume import Resume
-
 
 router = APIRouter(
     prefix="/resume-tailor",
@@ -43,11 +44,34 @@ async def tailor_resume(
             detail="Job not found",
         )
 
-    parser = ResumeParser()
+    # ---------------------------------------------------------
+    # Parse ONLY once.
+    # Every subsequent request uses the cached JSON.
+    # ---------------------------------------------------------
 
-    resume_json = await parser.parse(
-        resume.raw_text,
-    )
+    if resume.parsed_data is None:
+
+        parser = ResumeParser()
+
+        parsed = await parser.parse(
+            resume.raw_text,
+        )
+
+        if isinstance(
+            parsed,
+            str,
+        ):
+            resume.parsed_data = json.loads(
+                parsed,
+            )
+        else:
+            resume.parsed_data = parsed
+
+        db.commit()
+
+        db.refresh(
+            resume,
+        )
 
     tailor = ResumeTailor()
 
