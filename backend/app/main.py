@@ -11,6 +11,9 @@ from app.api.resume_ai import router as resume_ai_router
 from app.api.job_match import router as job_match_router
 from app.api.resume_tailor import router as resume_tailor_router
 from app.api.cover_letter import router as cover_letter_router
+from app.api.interview_questions import (
+    router as interview_questions_router,
+)
 
 
 
@@ -36,6 +39,9 @@ app.include_router(resume_ai_router)
 app.include_router(job_match_router)
 app.include_router(resume_tailor_router)
 app.include_router(cover_letter_router)
+app.include_router(
+    interview_questions_router,
+)
 
 @app.get("/")
 async def root():

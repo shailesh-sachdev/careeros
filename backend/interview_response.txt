@@ -1,0 +1,110 @@
+{
+  "technical": [
+    {
+      {
+        "question": "Can you explain the architecture of a FastAPI application and how it differs from traditional WSGI frameworks like Flask?",
+        "why_this_is_asked": "To evaluate the candidate's understanding of modern web frameworks, their ability to architect scalable applications, and their proficiency with FastAPI.",
+        "expected_answer": "FastAPI is a high-performance ASGI framework built on Starlette and Pydantic. It uses standard Python type hints for automatic API documentation and data validation, which differs from WSGI frameworks like Flask that are more focused on simplicity and ease of use rather than performance optimizations.",
+        "difficulty": "Easy"
+      }
+    },
+    {
+      "question": "How would you design an API endpoint to fetch a paginated list of financial transactions using FastAPI?",
+      "why_this_is_asked": "To assess the candidate's ability to implement RESTful APIs, handle pagination, and work with asynchronous programming in Python.",
+      "expected_answer": "Use Pydantic models for request parameters and response data, define an endpoint with a query parameter for page size and offset, use database ORM queries with LIMIT and OFFSET clauses or cursor-based pagination if necessary, return the desired data along with metadata such as total count and current page number.",
+        "difficulty": "Medium"
+      }
+    },
+    {
+      "question": "What experience do you have integrating AI models like OpenAI into backend systems? Can you give an example of a project where you did this?",
+      "why_this_is_asked": "To understand the candidate's practical experience with AI integrations and their ability to explain how they would apply such techniques in a real-world scenario.",
+        "expected_answer": "In my previous role at Houzeo, I integrated OpenAI API for generating structured responses to user queries. The system used prompts to generate relevant content based on input parameters, reducing the need for manual data entry and improving efficiency.",
+        "difficulty": "Easy"
+      }
+    },
+    {
+      "question": "How do you optimize database performance in a high-traffic backend application?",
+      "why_this_is_asked": "To assess the candidate's knowledge of database optimization techniques and their ability to handle scaling challenges.",
+        "expected_answer": "I would start by analyzing query execution plans, using caching strategies like Redis for frequently accessed data, implementing database indexing, optimizing schema design, and potentially sharding the database. I’d also consider read replicas and write scaling techniques depending on the specific use case.",
+        "difficulty": "Medium"
+      }
+    },
+    {
+      "question": "Describe a situation where you had to debug an issue in a complex backend system involving multiple services or databases. What tools did you use, and what was the resolution?",
+      "why_this_is_asked": "To evaluate problem-solving skills and experience with debugging complex systems.",
+        "expected_answer": "In one instance, I encountered issues with a third-party API integration where data inconsistencies led to errors in our internal dashboards. By leveraging logging and tracing tools like Sentry and Jaeger, we identified the root cause as an incorrect handling of asynchronous callbacks in the API wrapper code. The fix involved adding proper error handling and retries.",
+        "difficulty": "Medium"
+      }
+    },
+    {
+      "question": "How would you design a backend system to handle real-time financial data streaming from multiple sources?",
+      "why_this_is_asked": "To assess the candidate’s ability to design scalable systems for real-time data processing.",
+        "expected_answer": "I would use message queues like Kafka or RabbitMQ to decouple the data ingestion layer. Implement asynchronous consumer workers that process and update the database in real time, using techniques like microservices architecture for scalability and fault tolerance. Additionally, I’d ensure robust error handling and logging mechanisms are in place.",
+        "difficulty": "Hard"
+      }
+    },
+    {
+      "question": "Can you discuss a project where you had to work closely with non-technical stakeholders (e.g., finance teams) to implement backend changes?",
+      "why_this_is_asked": "To assess communication and collaboration skills in the context of cross-functional projects.",
+        "expected_answer": "In my role at Houzeo, I worked with our finance team to build a system that improved core web vitals by reducing database query times. We had weekly meetings to discuss progress, challenges, and next steps. By closely aligning technical solutions with business requirements, we were able to deliver a successful project.",
+        "difficulty": "Easy"
+      }
+    },
+    {
+      "question": "How would you approach designing an API for a financial system that needs to handle sensitive data like credit card numbers securely?",
+      "why_this_is_asked": "To evaluate the candidate’s knowledge of secure coding practices and their ability to design APIs with security in mind.",
+        "expected_answer": "I’d use encryption methods like AES-256 to protect data at rest, employ tokenization for sensitive fields. For API security, I'd implement OAuth 2.0 or similar standards for authentication, rate limiting to prevent abuse, and use HTTPS for secure communication. Additionally, I would follow the principle of least privilege and conduct regular security audits.",
+        "difficulty": "Medium"
+      }
+    },
+    {
+      "question": "How do you approach writing test cases for a backend system? Can you walk through an example?",
+      "why_this_is_asked": "To assess the candidate’s understanding of testing practices in software engineering.",
+        "expected_answer": "I use unit tests, integration tests, and end-to-end tests to ensure different parts of the application work as expected. For instance, when implementing a new transaction API endpoint, I’d write test cases for valid transactions, edge cases like zero or negative amounts, invalid inputs, and error handling scenarios.",
+        "difficulty": "Easy"
+      }
+    },
+    {
+      "question": "How do you ensure compliance with financial regulations in your backend systems?",
+      "why_this_is_asked": "To evaluate the candidate’s understanding of regulatory requirements and their approach to ensuring system compliance.",
+        "expected_answer": "I stay informed about relevant regulations such as GDPR, PCI-DSS, and SOX. Implement measures like data masking, secure logging, and regular audits. I also ensure that all APIs are designed with privacy in mind, using techniques like least privilege access control and robust error handling to minimize risks.",
+        "difficulty": "Hard"
+      }
+  ],
+  "behavioral": [
+    {
+      "question": "Can you describe a time when you had to make a difficult decision or take on a challenging task that went against your initial expectations? How did you handle it?",
+      "why_this_is_asked": "To assess the candidate’s ability to handle unexpected challenges and their problem-solving skills.",
+        "expected_answer": "In my previous role, I was tasked with integrating a third-party CRM system. Initially, we thought it would be straightforward, but it turned out that the CRM had several undocumented features that caused integration issues. To resolve this, I led cross-functional meetings to understand the underlying problems and worked closely with the CRM team to document their APIs properly before proceeding.",
+        "difficulty": "Easy"
+      }
+    },
+    {
+      "question": "Tell me about a project where you had to work under tight deadlines or high pressure. How did you manage your workload and maintain quality?",
+      "why_this_is_asked": "To assess the candidate’s ability to handle stress and prioritize tasks effectively.",
+        "expected_answer": "During my stint at Houzeo, we were tasked with improving a critical system that handled millions of transactions daily within two weeks. To manage this, I prioritized key features based on impact and risk, delegated tasks where appropriate, and worked closely with the team to ensure everyone was aligned and focused.",
+        "difficulty": "Easy"
+      }
+    },
+    {
+      "question": "Describe a time when you had to adapt quickly to new technology or processes. How did you approach it?",
+      "why_this_is_asked": "To evaluate the candidate’s adaptability and willingness to learn new technologies or tools.",
+        "expected_answer": "When we started using Ollama for prompt engineering, I recognized its potential but also knew that the team was not familiar with it. I took on the responsibility of learning quickly and setting up a training session for the team. We then worked together to implement prompts effectively into our backend systems, which improved our productivity significantly.",
+        "difficulty": "Easy"
+      }
+    },
+    {
+      "question": "How do you ensure that your code is maintainable and scalable? Can you give an example of how you’ve done this in a previous project?",
+      "why_this_is_asked": "To assess the candidate’s approach to software design and their experience with maintaining and scaling systems.",
+        "expected_answer": "I focus on writing modular, well-documented code. For instance, when building our AI resume tailor tool, I used clear directory structures and followed best practices like DRY (Don't Repeat Yourself) principles. This made the system easier to maintain and scale as new features were added over time.",
+        "difficulty": "Easy"
+      }
+    },
+    {
+      "question": "Can you tell me about a time when you had to mentor or lead a team? What was your role, and what did you learn from it?",
+      "why_this_is_asked": "To evaluate the candidate’s leadership skills and ability to guide others.",
+        "expected_answer": "In my previous role at Coding Diver, I led a small team of backend developers. My role involved guiding them on best practices for building efficient and scalable systems. Through this experience, I learned the importance of clear communication, setting achievable goals, and fostering an environment where everyone feels supported to contribute their best work.",
+        "difficulty": "Easy"
+      }
+  ]
+}
