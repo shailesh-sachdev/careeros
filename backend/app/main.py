@@ -14,6 +14,9 @@ from app.api.cover_letter import router as cover_letter_router
 from app.api.interview_questions import (
     router as interview_questions_router,
 )
+from app.api.dashboard import (
+    router as dashboard_router,
+)
 
 
 
@@ -41,6 +44,9 @@ app.include_router(resume_tailor_router)
 app.include_router(cover_letter_router)
 app.include_router(
     interview_questions_router,
+)
+app.include_router(
+    dashboard_router,
 )
 
 @app.get("/")
